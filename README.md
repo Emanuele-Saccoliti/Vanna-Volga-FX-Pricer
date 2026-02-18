@@ -48,11 +48,10 @@ $$\text{Digital}(K) = - \frac{\partial C(K)}{\partial K} \approx \frac{C(K-\epsi
 
 * **Market conventions complexity**: FX options rely on multiple delta conventions (spot/forward, premium included/excluded), and incorrect assumptions lead to incorrect strikes and pricing.
 
-* **Smile extrapolation risk**: Vanna–Volga is most reliable between the 25-delta pillars; far-wing extrapolation may become unstable.
-
 * **Finite-difference sensitivity**: Greeks and digital prices depend on step-size choices and require adaptive bumping for numerical stability.
 
 * **Performance optimization**: Repeated evaluations across multiple strikes and maturities require caching and efficient numerical routines to prevent redundant computations.
+
 
 
 
