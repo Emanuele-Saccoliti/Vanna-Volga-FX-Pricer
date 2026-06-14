@@ -91,9 +91,7 @@ This makes the code easier to extend. For example, a different normal CDF, anoth
 
 ## Caching System
 
-A cache stores results that have already been computed. If the same result is needed again, the pricer can reuse it instead of recomputing it.
-
-`VannaVolgaPricer` caches two things:
+A cache stores results that have already been computed. If the same result is needed again, the pricer can reuse it instead of recomputing it. `VannaVolgaPricer` caches two things:
 
 1. the ATM/RR/BF Greek matrix for each `MarketSlice`
 2. the solved pillar weights for target strikes already priced on that slice
@@ -108,7 +106,7 @@ private final Map<MarketSlice, SliceCache> sliceCaches =
         Collections.synchronizedMap(new WeakHashMap<>());
 ```
 
-The key is a `MarketSlice`, and the value is a `SliceCache`.
+The key is a `MarketSlice`, and the value is a `SliceCache`. 
 
 The use of `WeakHashMap` means the cache doesn't force old market slices to remain in memory forever. If the caller no longer holds a reference to a `MarketSlice`, the corresponding cache entry can be garbage-collected.
 
@@ -125,7 +123,9 @@ The matrix depends only on:
 S, rd, rf, T, sigmaATM, sigma25P, sigma25C, K_ATM, K_25P, K_25C
 ```
 
-It does not depend on the target strike. This makes it reusable across many strikes for the same maturity and market data.
+It n't depend on the target strike. This makes it reusable across many strikes for the same maturity and market data.
+
+
 
 ### Strike Weight Cache
 
@@ -220,7 +220,7 @@ So the sequence of tested bumps is:
 $$h_0,\quad \frac{h_0}{2},\quad \frac{h_0}{4},\quad \frac{h_0}{8},\quad \ldots$$
 
 
-The loop does not refine forever. The maximum number of refinements is:
+The loop doesn't refine forever. The maximum number of refinements is:
 
 ```java
 MAX_REFINEMENTS = 5
@@ -237,9 +237,7 @@ h_0,\quad
 \frac{h_0}{32}
 $$
 
-The value `5` is a practical numerical compromise. It gives the derivative
-enough chances to stabilize, but it avoids making $h$ so small that round-off
-error dominates or the calculation becomes unnecessarily expensive.
+The value `5` is a practical numerical compromise. It gives the derivative enough chances to stabilize, but it avoids making $h$ so small that round-off error dominates or the calculation becomes unnecessarily expensive.
 
 
 ## Stability Test
@@ -277,8 +275,7 @@ $$ f''(x) \approx \frac{f(x)-2f(x+h)+f(x+2h)}{h^2} $$
 
 
 ## Richardson Extrapolation
-Richardson extrapolation improves a finite-difference estimate by combining two
-estimates computed with different step sizes.
+Richardson extrapolation improves a finite-difference estimate by combining two estimates computed with different step sizes.
 
 Assume:
 $$D(h)=D^\* + C h^p + O(h^{p+1})$$
