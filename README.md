@@ -272,9 +272,9 @@ Assume:
 $$D(h)=D^\* + C h^p + O(h^{p+1})$$
 
 where:
-- \(D(h)\) is the derivative estimate using step \(h\)
-- \(D^\*\) is the true derivative
-- \(p\) is the convergence order
+- $D(h)$ is the derivative estimate using step \(h\)
+- $D^\*$ is the true derivative
+- $p$ is the convergence order
 
 With half the step:
 $$D(h/2)=D^\* + C\left(\frac{h}{2}\right)^p + O(h^{p+1})$$
