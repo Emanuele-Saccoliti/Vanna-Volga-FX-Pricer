@@ -313,7 +313,7 @@ private static int secondDerivativeOrder(double x, double h, double lowerBound) 
 Digital options are priced by finite differences on Vanna-Volga adjusted vanilla prices.
 
 For a digital call:
-$$ \text{DigitalCall}(K) = -\frac{\partial C(K)}{\partial K} \approx \frac{C(K-\epsilon)-C(K+\epsilon)}{2\epsilon} $$
+$$\text{DigitalCall}(K) = -\frac{\partial C(K)}{\partial K} \approx \frac{C(K-\epsilon)-C(K+\epsilon)}{2\epsilon}$$
 
 For a digital put:
 $$\text{DigitalPut}(K)=\frac{\partial P(K)}{\partial K} \approx \frac{P(K+\epsilon)-P(K-\epsilon)}{2\epsilon}$$
@@ -322,7 +322,7 @@ The finite-difference approximation is:
 $$\text{DigitalPut}(K) \approx \frac{P(K+\epsilon)-P(K-\epsilon)}{2\epsilon}$$
 
 The strike bump is:
-$$ \epsilon = \max(10^{-6}, 10^{-4}K) $$
+$$\epsilon = \max(10^{-6}, 10^{-4}K)$$
 
 Because the vanilla prices are already Vanna-Volga adjusted, the digital prices inherit the smile correction.
 
