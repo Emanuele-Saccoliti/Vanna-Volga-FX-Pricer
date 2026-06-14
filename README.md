@@ -49,8 +49,9 @@ $$\text{Digital}(K) = - \frac{\partial C(K)}{\partial K} \approx \frac{C(K-\epsi
 
 * **Performance optimization**: Repeated evaluations across multiple strikes and maturities require caching and efficient numerical routines to prevent redundant computations.
 
+<br>
 
-## Project Layout
+# Project Layout
 
 ```text
 src/main/java/fxvv/
@@ -79,7 +80,7 @@ src/main/java/fxvv/
 
 <br>
 
-## Numerical Design
+# Numerical Design
 - `NormalDist` abstracts the normal distribution implementation
 - `RootFinder` abstracts root solving
 - `LinearSolver` abstracts the 3-by-3 solve
@@ -89,16 +90,14 @@ src/main/java/fxvv/
 This makes the code easier to extend. For example, a different normal CDF, another root finder, or another smile pricer could be injected without changing the market data classes.
 
 
-## Caching System
-
+# Caching System
 A cache stores results that have already been computed. If the same result is needed again, the pricer can reuse it instead of recomputing it. `VannaVolgaPricer` caches two things:
 
 1. the ATM/RR/BF Greek matrix for each `MarketSlice`
 2. the solved pillar weights for target strikes already priced on that slice
 
 
-### Slice Cache
-
+## Slice Cache
 The pricer stores slice caches in:
 
 ```java
@@ -127,13 +126,10 @@ It n't depend on the target strike. This makes it reusable across many strikes f
 
 
 
-### Strike Weight Cache
-
-For each market slice, the pricer also caches solved pillar weights by target
-strike.
+## Strike Weight Cache
+For each market slice, the pricer also caches solved pillar weights by target strike.
 
 The strike key is:
-
 $$\text{key}(K) = \text{round}(K \times 10^8) $$
 
 In Java:
@@ -145,7 +141,6 @@ private long strikeKey(double K) {
 ```
 
 The cached value is:
-
 $$
 (w_{25P}, w_{\text{ATM,pillar}}, w_{25C})
 $$
@@ -153,7 +148,7 @@ $$
 This avoids recomputing target Greeks and solving the 3-by-3 system when the same strike is priced again.
 
 
-### LRU Eviction
+## LRU Eviction
 LRU means **Least Recently Used**. The idea is to keep recently used strikes in memory and discard old strikes that are less likely to be requested again.
 
 The strike cache is implemented as an access-order `LinkedHashMap`:
@@ -179,7 +174,7 @@ protected boolean removeEldestEntry(Map.Entry<Long, double[]> eldest) {
 ```
 
 
-## Adaptive Finite Differences
+# Adaptive Finite Differences
 `GreeksFD.java` computes Vega, Vanna, and Volga by finite differences.
 
 # Adaptive Finite Differences
@@ -240,7 +235,7 @@ $$
 The value `5` is a practical numerical compromise. It gives the derivative enough chances to stabilize, but it avoids making $h$ so small that round-off error dominates or the calculation becomes unnecessarily expensive.
 
 
-## Stability Test
+# Stability Test
 The adaptive loops stop when consecutive Richardson-improved estimates are close enough:
 
 $$
@@ -254,7 +249,7 @@ ABS_TOL = 1e-10
 REL_TOL = 5e-4
 ```
 
-## Boundary Protection
+# Boundary Protection
 The finite-difference code avoids invalid bumps through lower bounds:
 
 ```java
@@ -263,8 +258,7 @@ MIN_SPOT = 1e-12
 MIN_STEP = 1e-8
 ```
 
-If a symmetric scheme would cross the lower bound, the code uses a one-sided
-stencil.
+If a symmetric scheme would cross the lower bound, the code uses a one-sided scheme.
 
 For the first derivative near a lower bound:
 $$f'(x) \approx \frac{-3f(x)+4f(x+h)-f(x+2h)}{2h}$$
@@ -274,7 +268,7 @@ $$ f''(x) \approx \frac{f(x)-2f(x+h)+f(x+2h)}{h^2} $$
 
 
 
-## Richardson Extrapolation
+# Richardson Extrapolation
 Richardson extrapolation improves a finite-difference estimate by combining two estimates computed with different step sizes.
 
 Assume:
@@ -309,7 +303,7 @@ private static int secondDerivativeOrder(double x, double h, double lowerBound) 
 ```
 
 
-## Digital Options
+# Digital Options
 Digital options are priced by finite differences on Vanna-Volga adjusted vanilla prices.
 
 For a digital call:
@@ -327,8 +321,7 @@ $$\epsilon = \max(10^{-6}, 10^{-4}K)$$
 Because the vanilla prices are already Vanna-Volga adjusted, the digital prices inherit the smile correction.
 
 
-## End-To-End Flow
-
+# End-To-End Flow
 The demo follows this pipeline:
 1. choose market inputs and smile quotes
 2. parse the delta convention
