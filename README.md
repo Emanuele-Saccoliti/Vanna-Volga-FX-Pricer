@@ -1,4 +1,3 @@
-
 # Repository Description
 
 * This repository provides an FX options pricing library based on the Vanna–Volga methodology, calibrated directly to FX smile quotes. The framework transforms market delta quotes into strikes, reconstructing a consistent volatility smile, and producing market-consistent prices for vanilla and first generation exotic FX options.
@@ -141,9 +140,7 @@ private long strikeKey(double K) {
 ```
 
 The cached value is:
-$$
-(w_{25P}, w_{\text{ATM,pillar}}, w_{25C})
-$$
+$$(w_{25P}, w_{\text{ATM,pillar}}, w_{25C})$$
 
 This avoids recomputing target Greeks and solving the 3-by-3 system when the same strike is priced again.
 
